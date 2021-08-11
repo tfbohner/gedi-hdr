@@ -4,19 +4,19 @@ library(raster)
 library(rgdal)
 
 ## GEDI layer for matching
-path <- "Google Drive File Stream/My Drive/Teresa Lab Dir/HDR big trees/GEDI/"
+path <- "/Users/teresabohner/Google Drive/My Drive/Teresa Lab Dir/HDR big trees/GEDI/"
 height_mean <- raster(x = paste0(path, "USA_conus_gedi02_a_rh98_0.1x0.1deg.tif"), band=1)
 plot(height_mean)
 
 ## CONUS shapefile
-myshp <- readOGR("Google Drive File Stream/My Drive/Teresa Lab Dir/GIS/shapefiles/cb_2016_us_state_500k/")
+myshp <- readOGR("/Users/teresabohner/Google Drive/My Drive/Teresa Lab Dir/GIS/shapefiles/cb_2016_us_state_500k/")
 us2 <- spTransform(myshp,
             crs(height_mean))
 us2 <- crop(us2, extent(height_mean))
 
 height_mean2 <- mask(height_mean, us2)
 
-path <- "Google Drive File Stream/My Drive/Teresa Lab Dir/HDR big trees/Global_VPD_from_ERA5_land/"
+path <- "/Users/teresabohner/Google Drive/My Drive/Teresa Lab Dir/HDR big trees/Global_VPD_from_ERA5_land/"
 for(year in 1981:2019) {
   vpd <- raster(x= paste0(path, "VPD", year, ".nc"))
   vpd2 <- rotate(vpd)
@@ -30,7 +30,7 @@ for(year in 1981:2019) {
   
 }
 
-path <- "Google Drive File Stream/My Drive/Teresa Lab Dir/HDR big trees/conus_vpd/"
+path <- "/Users/teresabohner/Google Drive/My Drive/Teresa Lab Dir/HDR big trees/conus_vpd/"
 writeRaster(vpd_time, paste0(path, "vpd_time_conus.grd"), format="raster", overwrite=T)
 
 vpd_time <- stack(x = paste0(path, "vpd_time_conus.grd"))
